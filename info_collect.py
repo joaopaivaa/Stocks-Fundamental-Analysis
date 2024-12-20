@@ -22,31 +22,8 @@ def perc_var(array):
     std = round(np.std(perc_var), 4)
     return perc_var, mean, std
 
-columns = ['ticker',                    
-           'ebitda', 'ebitda_mean', 'ebitda_std',
-           'ebit', 'ebit_mean', 'ebit_std',
-           'net_income', 'net_income_mean', 'net_income_std',
-           'operating_income', 'operating_income_mean', 'operating_income_std',
-           'gross_profit', 'gross_profit_mean', 'gross_profit_std',
-           'total_revenue', 'total_revenue_mean', 'total_revenue_std',
-           'gross_margin', 'gross_margin_mean', 'gross_margin_std',
-           'ebitda_margin', 'ebitda_margin_mean', 'ebitda_margin_std',
-           'ebit_margin', 'ebit_margin_mean', 'ebit_margin_std',
-           'net_margin', 'net_margin_mean', 'net_margin_std',
-
-           'roa', 'roa_mean', 'roa_std',
-           'roe', 'roe_mean', 'roe_std',
-           'assets_net_worth', 'assets_net_worth_mean', 'assets_net_worth_std',
-           'participation_of_third_party_capital', 'participation_of_third_party_capital_mean', 'participation_of_third_party_capital_std',
-           'debit_composition', 'debit_composition_mean', 'debit_composition_std',
-           'net_debt',
-           'net_debt_ebitda', 'net_debt_ebitda_mean', 'net_debt_ebitda_std',
-           'general_liquidity', 'general_liquidity_mean', 'general_liquidity_std',
-           'current_liquidity', 'current_liquidity_mean', 'current_liquidity_std',
-           'dry_liquidity', 'dry_liquidity_mean', 'dry_liquidity_std']
-
-stocks_df_brazil = pd.DataFrame(columns=columns)
-stocks_df_usa = pd.DataFrame(columns=columns)
+stocks_df_brazil = pd.DataFrame()
+stocks_df_usa = pd.DataFrame()
 
 for ticker in tickers_ibov:
     
@@ -54,9 +31,32 @@ for ticker in tickers_ibov:
 
     income_statement = stock.income_stmt
     balance_sheet = stock.balance_sheet
+    info = stock.info
 
     if (not income_statement.empty) and (not balance_sheet.empty) and len(income_statement.columns) >= 4 and len(balance_sheet.columns) >= 4:
-        
+
+        new_line = pd.DataFrame()
+
+        # Info
+        new_line['ticker'] = [ticker]
+        new_line['country'] = stock.info['country'] if 'country' in stock.info else None
+        new_line['industry'] = stock.info['industry'] if 'industry' in stock.info else None
+        new_line['sector'] = stock.info['sector'] if 'sector' in stock.info else None
+
+        # Dividend
+        new_line['dividend_rate'] = stock.info['dividendRate'] if 'dividendRate' in stock.info else None
+        new_line['dividend_yield'] = stock.info['dividendYield'] if 'dividendYield' in stock.info else None
+
+        # Valuation
+        #new_line['beta'] = stock.info['beta'] if 'beta' in stock.info else None
+        #new_line['marketcap'] = stock.info['marketCap'] if 'marketCap' in stock.info else None
+        #new_line['enterprise_value'] = stock.info['enterpriseValue'] if 'enterpriseValue' in stock.info else None
+        new_line['EV/revenue'] = stock.info['enterpriseToRevenue'] if 'enterpriseToRevenue' in stock.info else None
+        new_line['EV/ebitda'] = stock.info['enterpriseToEbitda'] if 'enterpriseToEbitda' in stock.info else None
+
+        new_line['negative_EV/revenue'] = (0 if new_line['EV/revenue'].values[0] > 0 else 1) if new_line['EV/revenue'].values[0] is not None else None
+        new_line['negative_EV/ebitda'] = (0 if new_line['EV/ebitda'].values[0] > 0 else 1) if new_line['EV/ebitda'].values[0] is not None else None
+
         # Income Statement ############################################################################################################
 
         income_statement = income_statement.drop(income_statement.columns[4], axis=1) if len(income_statement.columns) == 5 else income_statement
@@ -110,6 +110,47 @@ for ticker in tickers_ibov:
         (ebitda_margin_variation, ebitda_margin_mean, ebitda_margin_std) = (perc_var(ebitda_margin) if (not None in ebitda_margin) and (not 0 in ebitda_margin) else (None, None, None))
         (ebit_margin_variation, ebit_margin_mean, ebit_margin_std) = (perc_var(ebit_margin) if (not None in ebit_margin) and (not 0 in ebit_margin) else (None, None, None))
         (net_margin_variation, net_margin_mean, net_margin_std) = (perc_var(net_margin) if (not None in net_margin) and (not 0 in net_margin) else (None, None, None))
+
+        # Has negative value?
+        negative_ebitda = (0 if any(ebitda > 0) else 1) if (not None in ebitda) else None
+        negative_ebit = (0 if any(ebit > 0) else 1) if (not None in ebit) else None
+        negative_net_income = (0 if any(net_income > 0) else 1) if (not None in net_income) else None
+        negative_operating_income = (0 if any(operating_income > 0) else 1) if (not None in operating_income) else None
+
+        #new_line['ebitda_last'] = ebitda[0]
+        new_line['ebitda_mean'] = ebitda_mean
+        new_line['ebitda_std'] = ebitda_std
+        new_line['negative_ebitda'] = negative_ebitda
+        #new_line['ebit_last'] = ebit[0]
+        new_line['ebit_mean'] = ebit_mean
+        new_line['ebit_std'] = ebit_std
+        new_line['negative_ebit'] = negative_ebit
+        #new_line['net_income_last'] = net_income[0]
+        new_line['net_income_mean'] = net_income_mean
+        new_line['net_income_std'] = net_income_std
+        new_line['negative_net_income'] = negative_net_income
+        #new_line['operating_income_last'] = operating_income[0]
+        new_line['operating_income_mean'] = operating_income_mean
+        new_line['operating_income_std'] = operating_income_std
+        new_line['negative_operating_income'] = negative_operating_income
+        #new_line['gross_profit_last'] = gross_profit[0]
+        new_line['gross_profit_mean'] = gross_profit_mean
+        new_line['gross_profit_std'] = gross_profit_std
+        #new_line['total_revenue_last'] = total_revenue[0]
+        new_line['total_revenue_mean'] = total_revenue_mean
+        new_line['total_revenue_std'] = total_revenue_std
+        new_line['gross_margin_last'] = gross_margin[0]
+        new_line['gross_margin_mean'] = gross_margin_mean
+        new_line['gross_margin_std'] = gross_margin_std
+        new_line['ebitda_margin_last'] = ebitda_margin[0]
+        new_line['ebitda_margin_mean'] = ebitda_margin_mean
+        new_line['ebitda_margin_std'] = ebitda_margin_std
+        new_line['ebit_margin_last'] = ebit_margin[0]
+        new_line['ebit_margin_mean'] = ebit_margin_mean
+        new_line['ebit_margin_std'] = ebit_margin_std
+        new_line['net_margin_last'] = net_margin[0]
+        new_line['net_margin_mean'] = net_margin_mean
+        new_line['net_margin_std'] = net_margin_std
 
         # Balance Sheet ###############################################################################################################
 
@@ -199,31 +240,34 @@ for ticker in tickers_ibov:
         (current_liquidity_variation, current_liquidity_mean, current_liquidity_std) = (perc_var(current_liquidity) if (not None in current_liquidity) and (not 0 in current_liquidity) else (None, None, None))
         (dry_liquidity_variation, dry_liquidity_mean, dry_liquidity_std) = (perc_var(dry_liquidity) if (not None in dry_liquidity) and (not 0 in dry_liquidity) else (None, None, None))
 
-        new_line = pd.DataFrame([[ticker,
-                                
-                                ebitda, ebitda_mean, ebitda_std,
-                                ebit, ebit_mean, ebit_std,
-                                net_income, net_income_mean, net_income_std,
-                                operating_income, operating_income_mean, operating_income_std,
-                                gross_profit, gross_profit_mean, gross_profit_std,
-                                total_revenue, total_revenue_mean, total_revenue_std,
-                                gross_margin, gross_margin_mean, gross_margin_std,
-                                ebitda_margin, ebitda_margin_mean, ebitda_margin_std,
-                                ebit_margin, ebit_margin_mean, ebit_margin_std,
-                                net_margin, net_margin_mean, net_margin_std,
-
-                                roa, roa_mean, roa_std,
-                                roe, roe_mean, roe_std,
-                                assets_net_worth, assets_net_worth_mean, assets_net_worth_std,
-                                participation_of_third_party_capital, participation_of_third_party_capital_mean, participation_of_third_party_capital_std,
-                                debit_composition, debit_composition_mean, debit_composition_std,
-                                net_debt,
-                                net_debt_ebitda, net_debt_ebitda_mean, net_debt_ebitda_std,
-                                general_liquidity, general_liquidity_mean, general_liquidity_std,
-                                current_liquidity, current_liquidity_mean, current_liquidity_std,
-                                dry_liquidity, dry_liquidity_mean, dry_liquidity_std
-                                
-                                ]], columns=columns)
+        new_line['roa'] = roa[0]
+        new_line['roa_mean'] = roa_mean
+        new_line['roa_std'] = roa_std
+        new_line['roe'] = roe[0]
+        new_line['roe_mean'] = roe_mean
+        new_line['roe_std'] = roe_std
+        new_line['assets_net_worth'] = assets_net_worth[0]
+        new_line['assets_net_worth_mean'] = assets_net_worth_mean
+        new_line['assets_net_worth_std'] = assets_net_worth_std
+        new_line['participation_of_third_party_capital'] = participation_of_third_party_capital[0]
+        new_line['participation_of_third_party_capital_mean'] = participation_of_third_party_capital_mean
+        new_line['participation_of_third_party_capital_std'] = participation_of_third_party_capital_std
+        new_line['debit_composition'] = debit_composition[0]
+        new_line['debit_composition_mean'] = debit_composition_mean
+        new_line['debit_composition_std'] = debit_composition_std
+        #new_line['net_debt'] = net_debt[0]
+        new_line['net_debt_ebitda'] = net_debt_ebitda[0]
+        new_line['net_debt_ebitda_mean'] = net_debt_ebitda_mean
+        new_line['net_debt_ebitda_std'] = net_debt_ebitda_std
+        new_line['general_liquidity'] = general_liquidity[0]
+        new_line['general_liquidity_mean'] = general_liquidity_mean
+        new_line['general_liquidity_std'] = general_liquidity_std
+        new_line['current_liquidity'] = current_liquidity[0]
+        new_line['current_liquidity_mean'] = current_liquidity_mean
+        new_line['current_liquidity_std'] = current_liquidity_std
+        new_line['dry_liquidity'] = dry_liquidity[0]
+        new_line['dry_liquidity_mean'] = dry_liquidity_mean
+        new_line['dry_liquidity_std'] = dry_liquidity_std
 
         stocks_df_brazil = pd.concat([stocks_df_brazil, new_line], ignore_index=True)
 
@@ -233,9 +277,32 @@ for ticker in tickers_SP:
 
     income_statement = stock.income_stmt
     balance_sheet = stock.balance_sheet
+    info = stock.info
 
     if (not income_statement.empty) and (not balance_sheet.empty) and len(income_statement.columns) >= 4 and len(balance_sheet.columns) >= 4:
-        
+
+        new_line = pd.DataFrame()
+
+        # Info
+        new_line['ticker'] = [ticker]
+        new_line['country'] = stock.info['country'] if 'country' in stock.info else None
+        new_line['industry'] = stock.info['industry'] if 'industry' in stock.info else None
+        new_line['sector'] = stock.info['sector'] if 'sector' in stock.info else None
+
+        # Dividend
+        new_line['dividend_rate'] = stock.info['dividendRate'] if 'dividendRate' in stock.info else None
+        new_line['dividend_yield'] = stock.info['dividendYield'] if 'dividendYield' in stock.info else None
+
+        # Valuation
+        #new_line['beta'] = stock.info['beta'] if 'beta' in stock.info else None
+        #new_line['marketcap'] = stock.info['marketCap'] if 'marketCap' in stock.info else None
+        #new_line['enterprise_value'] = stock.info['enterpriseValue'] if 'enterpriseValue' in stock.info else None
+        new_line['EV/revenue'] = stock.info['enterpriseToRevenue'] if 'enterpriseToRevenue' in stock.info else None
+        new_line['EV/ebitda'] = stock.info['enterpriseToEbitda'] if 'enterpriseToEbitda' in stock.info else None
+
+        new_line['negative_EV/revenue'] = (0 if new_line['EV/revenue'].values[0] > 0 else 1) if new_line['EV/revenue'].values[0] is not None else None
+        new_line['negative_EV/ebitda'] = (0 if new_line['EV/ebitda'].values[0] > 0 else 1) if new_line['EV/ebitda'].values[0] is not None else None
+
         # Income Statement ############################################################################################################
 
         income_statement = income_statement.drop(income_statement.columns[4], axis=1) if len(income_statement.columns) == 5 else income_statement
@@ -289,6 +356,47 @@ for ticker in tickers_SP:
         (ebitda_margin_variation, ebitda_margin_mean, ebitda_margin_std) = (perc_var(ebitda_margin) if (not None in ebitda_margin) and (not 0 in ebitda_margin) else (None, None, None))
         (ebit_margin_variation, ebit_margin_mean, ebit_margin_std) = (perc_var(ebit_margin) if (not None in ebit_margin) and (not 0 in ebit_margin) else (None, None, None))
         (net_margin_variation, net_margin_mean, net_margin_std) = (perc_var(net_margin) if (not None in net_margin) and (not 0 in net_margin) else (None, None, None))
+
+        # Has negative value?
+        negative_ebitda = (0 if any(ebitda > 0) else 1) if (not None in ebitda) else None
+        negative_ebit = (0 if any(ebit > 0) else 1) if (not None in ebit) else None
+        negative_net_income = (0 if any(net_income > 0) else 1) if (not None in net_income) else None
+        negative_operating_income = (0 if any(operating_income > 0) else 1) if (not None in operating_income) else None
+
+        #new_line['ebitda_last'] = ebitda[0]
+        new_line['ebitda_mean'] = ebitda_mean
+        new_line['ebitda_std'] = ebitda_std
+        new_line['negative_ebitda'] = negative_ebitda
+        #new_line['ebit_last'] = ebit[0]
+        new_line['ebit_mean'] = ebit_mean
+        new_line['ebit_std'] = ebit_std
+        new_line['negative_ebit'] = negative_ebit
+        #new_line['net_income_last'] = net_income[0]
+        new_line['net_income_mean'] = net_income_mean
+        new_line['net_income_std'] = net_income_std
+        new_line['negative_net_income'] = negative_net_income
+        #new_line['operating_income_last'] = operating_income[0]
+        new_line['operating_income_mean'] = operating_income_mean
+        new_line['operating_income_std'] = operating_income_std
+        new_line['negative_operating_income'] = negative_operating_income
+        #new_line['gross_profit_last'] = gross_profit[0]
+        new_line['gross_profit_mean'] = gross_profit_mean
+        new_line['gross_profit_std'] = gross_profit_std
+        #new_line['total_revenue_last'] = total_revenue[0]
+        new_line['total_revenue_mean'] = total_revenue_mean
+        new_line['total_revenue_std'] = total_revenue_std
+        new_line['gross_margin_last'] = gross_margin[0]
+        new_line['gross_margin_mean'] = gross_margin_mean
+        new_line['gross_margin_std'] = gross_margin_std
+        new_line['ebitda_margin_last'] = ebitda_margin[0]
+        new_line['ebitda_margin_mean'] = ebitda_margin_mean
+        new_line['ebitda_margin_std'] = ebitda_margin_std
+        new_line['ebit_margin_last'] = ebit_margin[0]
+        new_line['ebit_margin_mean'] = ebit_margin_mean
+        new_line['ebit_margin_std'] = ebit_margin_std
+        new_line['net_margin_last'] = net_margin[0]
+        new_line['net_margin_mean'] = net_margin_mean
+        new_line['net_margin_std'] = net_margin_std
 
         # Balance Sheet ###############################################################################################################
 
@@ -378,33 +486,36 @@ for ticker in tickers_SP:
         (current_liquidity_variation, current_liquidity_mean, current_liquidity_std) = (perc_var(current_liquidity) if (not None in current_liquidity) and (not 0 in current_liquidity) else (None, None, None))
         (dry_liquidity_variation, dry_liquidity_mean, dry_liquidity_std) = (perc_var(dry_liquidity) if (not None in dry_liquidity) and (not 0 in dry_liquidity) else (None, None, None))
 
-        new_line = pd.DataFrame([[ticker,
-                                
-                                ebitda, ebitda_mean, ebitda_std,
-                                ebit, ebit_mean, ebit_std,
-                                net_income, net_income_mean, net_income_std,
-                                operating_income, operating_income_mean, operating_income_std,
-                                gross_profit, gross_profit_mean, gross_profit_std,
-                                total_revenue, total_revenue_mean, total_revenue_std,
-                                gross_margin, gross_margin_mean, gross_margin_std,
-                                ebitda_margin, ebitda_margin_mean, ebitda_margin_std,
-                                ebit_margin, ebit_margin_mean, ebit_margin_std,
-                                net_margin, net_margin_mean, net_margin_std,
+        new_line['roa'] = roa[0]
+        new_line['roa_mean'] = roa_mean
+        new_line['roa_std'] = roa_std
+        new_line['roe'] = roe[0]
+        new_line['roe_mean'] = roe_mean
+        new_line['roe_std'] = roe_std
+        new_line['assets_net_worth'] = assets_net_worth[0]
+        new_line['assets_net_worth_mean'] = assets_net_worth_mean
+        new_line['assets_net_worth_std'] = assets_net_worth_std
+        new_line['participation_of_third_party_capital'] = participation_of_third_party_capital[0]
+        new_line['participation_of_third_party_capital_mean'] = participation_of_third_party_capital_mean
+        new_line['participation_of_third_party_capital_std'] = participation_of_third_party_capital_std
+        new_line['debit_composition'] = debit_composition[0]
+        new_line['debit_composition_mean'] = debit_composition_mean
+        new_line['debit_composition_std'] = debit_composition_std
+        #new_line['net_debt'] = net_debt[0]
+        new_line['net_debt_ebitda'] = net_debt_ebitda[0]
+        new_line['net_debt_ebitda_mean'] = net_debt_ebitda_mean
+        new_line['net_debt_ebitda_std'] = net_debt_ebitda_std
+        new_line['general_liquidity'] = general_liquidity[0]
+        new_line['general_liquidity_mean'] = general_liquidity_mean
+        new_line['general_liquidity_std'] = general_liquidity_std
+        new_line['current_liquidity'] = current_liquidity[0]
+        new_line['current_liquidity_mean'] = current_liquidity_mean
+        new_line['current_liquidity_std'] = current_liquidity_std
+        new_line['dry_liquidity'] = dry_liquidity[0]
+        new_line['dry_liquidity_mean'] = dry_liquidity_mean
+        new_line['dry_liquidity_std'] = dry_liquidity_std
 
-                                roa, roa_mean, roa_std,
-                                roe, roe_mean, roe_std,
-                                assets_net_worth, assets_net_worth_mean, assets_net_worth_std,
-                                participation_of_third_party_capital, participation_of_third_party_capital_mean, participation_of_third_party_capital_std,
-                                debit_composition, debit_composition_mean, debit_composition_std,
-                                net_debt,
-                                net_debt_ebitda, net_debt_ebitda_mean, net_debt_ebitda_std,
-                                general_liquidity, general_liquidity_mean, general_liquidity_std,
-                                current_liquidity, current_liquidity_mean, current_liquidity_std,
-                                dry_liquidity, dry_liquidity_mean, dry_liquidity_std
-                                
-                                ]], columns=columns)
-
-        stocks_df_brazil = pd.concat([stocks_df_brazil, new_line], ignore_index=True)
+        stocks_df_usa = pd.concat([stocks_df_usa, new_line], ignore_index=True)
 
 stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False)
 stocks_df_usa.to_csv('stocks_df_usa.csv', index=False)

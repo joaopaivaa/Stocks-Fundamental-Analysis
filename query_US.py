@@ -1,8 +1,6 @@
-import pandas as pd
+from info_collect import stocks_df_usa
 
-stocks_df = pd.read_csv("stocks_df.csv")
-
-
+stocks_df = stocks_df_usa
 
 stocks_df = stocks_df[stocks_df.EBITDA > 0][stocks_df.EBITDA_mean > 0.1]
 stocks_df = stocks_df[stocks_df.Net_Income > 0][stocks_df.Net_Income_mean > 0.1]
