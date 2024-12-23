@@ -112,43 +112,43 @@ for ticker in tickers_ibov:
         (net_margin_variation, net_margin_mean, net_margin_std) = (perc_var(net_margin) if (not None in net_margin) and (not 0 in net_margin) else (None, None, None))
 
         # Has negative value?
-        negative_ebitda = (0 if any(ebitda > 0) else 1) if (not None in ebitda) else None
-        negative_ebit = (0 if any(ebit > 0) else 1) if (not None in ebit) else None
-        negative_net_income = (0 if any(net_income > 0) else 1) if (not None in net_income) else None
-        negative_operating_income = (0 if any(operating_income > 0) else 1) if (not None in operating_income) else None
+        negative_ebitda = (1 if any(ebitda < 0) else 0) if (not None in ebitda) else None
+        negative_ebit = (1 if any(ebit < 0) else 0) if (not None in ebit) else None
+        negative_net_income = (1 if any(net_income < 0) else 0) if (not None in net_income) else None
+        negative_operating_income = (1 if any(operating_income < 0) else 0) if (not None in operating_income) else None
 
-        #new_line['ebitda_last'] = ebitda[0]
+        new_line['ebitda'] = ebitda[0]
         new_line['ebitda_mean'] = ebitda_mean
         new_line['ebitda_std'] = ebitda_std
         new_line['negative_ebitda'] = negative_ebitda
-        #new_line['ebit_last'] = ebit[0]
+        new_line['ebit'] = ebit[0]
         new_line['ebit_mean'] = ebit_mean
         new_line['ebit_std'] = ebit_std
         new_line['negative_ebit'] = negative_ebit
-        #new_line['net_income_last'] = net_income[0]
+        new_line['net_income'] = net_income[0]
         new_line['net_income_mean'] = net_income_mean
         new_line['net_income_std'] = net_income_std
         new_line['negative_net_income'] = negative_net_income
-        #new_line['operating_income_last'] = operating_income[0]
+        new_line['operating_income'] = operating_income[0]
         new_line['operating_income_mean'] = operating_income_mean
         new_line['operating_income_std'] = operating_income_std
         new_line['negative_operating_income'] = negative_operating_income
-        #new_line['gross_profit_last'] = gross_profit[0]
+        new_line['gross_profit'] = gross_profit[0]
         new_line['gross_profit_mean'] = gross_profit_mean
         new_line['gross_profit_std'] = gross_profit_std
-        #new_line['total_revenue_last'] = total_revenue[0]
+        new_line['total_revenue'] = total_revenue[0]
         new_line['total_revenue_mean'] = total_revenue_mean
         new_line['total_revenue_std'] = total_revenue_std
-        new_line['gross_margin_last'] = gross_margin[0]
+        new_line['gross_margin'] = gross_margin[0]
         new_line['gross_margin_mean'] = gross_margin_mean
         new_line['gross_margin_std'] = gross_margin_std
-        new_line['ebitda_margin_last'] = ebitda_margin[0]
+        new_line['ebitda_margin'] = ebitda_margin[0]
         new_line['ebitda_margin_mean'] = ebitda_margin_mean
         new_line['ebitda_margin_std'] = ebitda_margin_std
-        new_line['ebit_margin_last'] = ebit_margin[0]
+        new_line['ebit_margin'] = ebit_margin[0]
         new_line['ebit_margin_mean'] = ebit_margin_mean
         new_line['ebit_margin_std'] = ebit_margin_std
-        new_line['net_margin_last'] = net_margin[0]
+        new_line['net_margin'] = net_margin[0]
         new_line['net_margin_mean'] = net_margin_mean
         new_line['net_margin_std'] = net_margin_std
 
@@ -255,7 +255,7 @@ for ticker in tickers_ibov:
         new_line['debit_composition'] = debit_composition[0]
         new_line['debit_composition_mean'] = debit_composition_mean
         new_line['debit_composition_std'] = debit_composition_std
-        #new_line['net_debt'] = net_debt[0]
+        new_line['net_debt'] = net_debt[0]
         new_line['net_debt_ebitda'] = net_debt_ebitda[0]
         new_line['net_debt_ebitda_mean'] = net_debt_ebitda_mean
         new_line['net_debt_ebitda_std'] = net_debt_ebitda_std
@@ -270,6 +270,8 @@ for ticker in tickers_ibov:
         new_line['dry_liquidity_std'] = dry_liquidity_std
 
         stocks_df_brazil = pd.concat([stocks_df_brazil, new_line], ignore_index=True)
+
+stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False, decimal='.', sep=';')
 
 for ticker in tickers_SP:
 
@@ -358,43 +360,43 @@ for ticker in tickers_SP:
         (net_margin_variation, net_margin_mean, net_margin_std) = (perc_var(net_margin) if (not None in net_margin) and (not 0 in net_margin) else (None, None, None))
 
         # Has negative value?
-        negative_ebitda = (0 if any(ebitda > 0) else 1) if (not None in ebitda) else None
-        negative_ebit = (0 if any(ebit > 0) else 1) if (not None in ebit) else None
-        negative_net_income = (0 if any(net_income > 0) else 1) if (not None in net_income) else None
-        negative_operating_income = (0 if any(operating_income > 0) else 1) if (not None in operating_income) else None
+        negative_ebitda = (1 if any(ebitda < 0) else 0) if (not None in ebitda) else None
+        negative_ebit = (1 if any(ebit < 0) else 0) if (not None in ebit) else None
+        negative_net_income = (1 if any(net_income < 0) else 0) if (not None in net_income) else None
+        negative_operating_income = (1 if any(operating_income < 0) else 0) if (not None in operating_income) else None
 
-        #new_line['ebitda_last'] = ebitda[0]
+        new_line['ebitda'] = ebitda[0]
         new_line['ebitda_mean'] = ebitda_mean
         new_line['ebitda_std'] = ebitda_std
         new_line['negative_ebitda'] = negative_ebitda
-        #new_line['ebit_last'] = ebit[0]
+        new_line['ebit'] = ebit[0]
         new_line['ebit_mean'] = ebit_mean
         new_line['ebit_std'] = ebit_std
         new_line['negative_ebit'] = negative_ebit
-        #new_line['net_income_last'] = net_income[0]
+        new_line['net_income'] = net_income[0]
         new_line['net_income_mean'] = net_income_mean
         new_line['net_income_std'] = net_income_std
         new_line['negative_net_income'] = negative_net_income
-        #new_line['operating_income_last'] = operating_income[0]
+        new_line['operating_income'] = operating_income[0]
         new_line['operating_income_mean'] = operating_income_mean
         new_line['operating_income_std'] = operating_income_std
         new_line['negative_operating_income'] = negative_operating_income
-        #new_line['gross_profit_last'] = gross_profit[0]
+        new_line['gross_profit'] = gross_profit[0]
         new_line['gross_profit_mean'] = gross_profit_mean
         new_line['gross_profit_std'] = gross_profit_std
-        #new_line['total_revenue_last'] = total_revenue[0]
+        new_line['total_revenue'] = total_revenue[0]
         new_line['total_revenue_mean'] = total_revenue_mean
         new_line['total_revenue_std'] = total_revenue_std
-        new_line['gross_margin_last'] = gross_margin[0]
+        new_line['gross_margin'] = gross_margin[0]
         new_line['gross_margin_mean'] = gross_margin_mean
         new_line['gross_margin_std'] = gross_margin_std
-        new_line['ebitda_margin_last'] = ebitda_margin[0]
+        new_line['ebitda_margin'] = ebitda_margin[0]
         new_line['ebitda_margin_mean'] = ebitda_margin_mean
         new_line['ebitda_margin_std'] = ebitda_margin_std
-        new_line['ebit_margin_last'] = ebit_margin[0]
+        new_line['ebit_margin'] = ebit_margin[0]
         new_line['ebit_margin_mean'] = ebit_margin_mean
         new_line['ebit_margin_std'] = ebit_margin_std
-        new_line['net_margin_last'] = net_margin[0]
+        new_line['net_margin'] = net_margin[0]
         new_line['net_margin_mean'] = net_margin_mean
         new_line['net_margin_std'] = net_margin_std
 
@@ -501,7 +503,7 @@ for ticker in tickers_SP:
         new_line['debit_composition'] = debit_composition[0]
         new_line['debit_composition_mean'] = debit_composition_mean
         new_line['debit_composition_std'] = debit_composition_std
-        #new_line['net_debt'] = net_debt[0]
+        new_line['net_debt'] = net_debt[0]
         new_line['net_debt_ebitda'] = net_debt_ebitda[0]
         new_line['net_debt_ebitda_mean'] = net_debt_ebitda_mean
         new_line['net_debt_ebitda_std'] = net_debt_ebitda_std
@@ -517,5 +519,4 @@ for ticker in tickers_SP:
 
         stocks_df_usa = pd.concat([stocks_df_usa, new_line], ignore_index=True)
 
-stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False)
-stocks_df_usa.to_csv('stocks_df_usa.csv', index=False)
+stocks_df_usa.to_csv('stocks_df_usa.csv', index=False, decimal='.', sep=';')
