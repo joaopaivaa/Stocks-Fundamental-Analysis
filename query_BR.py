@@ -22,7 +22,7 @@ evaluation = {
 
 priority = ['EV/ebitda','net_margin','ebitda_margin','roe','net_debt_ebitda','general_liquidity']
 
-stocks_df = pd.read_csv("stocks_df_usa.csv", sep=';')
+stocks_df = pd.read_csv("stocks_df_brazil.csv", sep=';')
 
 stocks_df = stocks_df.loc[stocks_df['negative_ebitda'] != 1]
 stocks_df = stocks_df.loc[stocks_df['negative_ebit'] != 1]
@@ -70,9 +70,9 @@ for key in evaluation.keys():
     except Exception as e:
         pass
 
-stocks_df.to_csv('stocks_us_evaluated.csv', index=False, decimal='.', sep=';')
+stocks_df.to_csv('stocks_brazil_evaluated.csv', index=False, decimal='.', sep=';')
 
 grades_df['Grade'] = grades_df.iloc[:, 4:].sum(axis=1)
 grades_df = grades_df.sort_values(by='Grade', ascending=False).reset_index(drop=True)
 
-grades_df.to_csv('stocks_us_grades.csv', index=False, decimal='.', sep=';')
+grades_df.to_csv('stocks_brazil_grades.csv', index=False, decimal='.', sep=';')
