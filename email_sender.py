@@ -1,3 +1,5 @@
+start = time.time()
+
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -5,8 +7,6 @@ import os
 from analysis_brazil import df_evaluated as df_evaluated_brazil
 from analysis_us import df_evaluated as df_evaluated_us
 import time
-
-start = time.time()
 
 smtp_server = "smtp.gmail.com"
 smtp_port = 587

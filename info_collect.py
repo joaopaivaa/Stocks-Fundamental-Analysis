@@ -1,7 +1,6 @@
 import pandas as pd
 import yfinance as yf
 import numpy as np
-import math
 
 table_SP = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
 df_SP = table_SP[0]
