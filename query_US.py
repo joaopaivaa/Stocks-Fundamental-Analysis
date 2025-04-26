@@ -1,10 +1,11 @@
 import pandas as pd
 import re
 from sklearn.preprocessing import MinMaxScaler
+from info_collect import stocks_df_usa
 
 evaluation = {
         "EV/revenue": {"positive": "< 3", "negative": "> 5"},
-        "EV/ebitda": {"positive": "< 10", "negative": "> 15"},
+        "EV/ebitda": {"positive": "< 10", "negative": "> 20"},
         "gross_margin": {"positive": "> 0.4", "negative": "< 0.2"},
         "ebitda_margin": {"positive": "> 0.3", "negative": "< 0.15"},
         "ebit_margin": {"positive": "> 0.2", "negative": "< 0.1"},
@@ -14,15 +15,16 @@ evaluation = {
         "general_liquidity": {"positive": "> 1.5", "negative": "< 1"},
         "current_liquidity": {"positive": "> 1.5", "negative": "< 1"},
         "dry_liquidity": {"positive": "> 1", "negative": "< 0.8"},
-        "participation_of_third_party_capital": {"positive": "< 50%", "negative": "> 70%"},
-        "net_debt_ebitda": {"positive": "< 2", "negative": "> 5"},
-        "dividend_yield": {"positive": "> 0.04", "negative": "< 0.02"},
-        "dividend_rate": {"positive": "> 0.3", "negative": "< 0.15"}
+        "participation_of_third_party_capital": {"positive": "< 0.5", "negative": "> 0.7"},
+        "net_debt_ebitda": {"positive": "< 2", "negative": "> 4"},
+        "dividend_yield": {"positive": "> 4", "negative": "< 2"},
+        "dividend_rate": {"positive": "> 30", "negative": "< 15"}
     }
 
 priority = ['EV/ebitda','net_margin','ebitda_margin','roe','net_debt_ebitda','general_liquidity']
 
-stocks_df = pd.read_csv("stocks_df_usa.csv", sep=';')
+#stocks_df = pd.read_csv("stocks_df_usa.csv", sep=';')
+stocks_df = stocks_df_usa.copy()
 
 stocks_df = stocks_df.loc[stocks_df['negative_ebitda'] != 1]
 stocks_df = stocks_df.loc[stocks_df['negative_ebit'] != 1]
