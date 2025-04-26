@@ -275,7 +275,7 @@ for ticker in tickers_ibov:
             stocks_df_brazil.append(new_line)
 
 stocks_df_brazil = pd.DataFrame(stocks_df_brazil)
-stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False, decimal='.', sep=';')
+# stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False, decimal='.', sep=';')
 
 for ticker in tickers_SP:
 
@@ -529,4 +529,4 @@ for ticker in tickers_SP:
         stocks_df_usa.append(new_line)
 
 stocks_df_usa = pd.DataFrame(stocks_df_usa)
-stocks_df_usa.to_csv('stocks_df_usa.csv', index=False, decimal='.', sep=';')
+# stocks_df_usa.to_csv('stocks_df_usa.csv', index=False, decimal='.', sep=';')

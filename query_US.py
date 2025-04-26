@@ -77,4 +77,4 @@ stocks_df.to_csv('stocks_us_evaluated.csv', index=False, decimal='.', sep=';')
 grades_df['Grade'] = grades_df.iloc[:, 4:].sum(axis=1)
 grades_df = grades_df.sort_values(by='Grade', ascending=False).reset_index(drop=True)
 
-grades_df.to_csv('stocks_us_grades.csv', index=False, decimal='.', sep=';')
+# grades_df.to_csv('stocks_us_grades.csv', index=False, decimal='.', sep=';')
