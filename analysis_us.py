@@ -1,4 +1,3 @@
-import pandas as pd
 from query_US import grades_df, stocks_df
 
 df_grades = grades_df.copy()
