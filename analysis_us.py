@@ -1,12 +1,11 @@
 import pandas as pd
-from query_US import grades_df
+from query_US import grades_df, stocks_df
 
-# df_grades = pd.read_csv("stocks_us_grades.csv", sep=';')
 df_grades = grades_df.copy()
 df_grades.sort_values(by='ticker', ascending=True, inplace=True)
 df_grades.reset_index(drop=True, inplace=True)
 
-df_evaluated = pd.read_csv("stocks_us_evaluated.csv", sep=';')
+df_evaluated = stocks_df.copy()
 df_evaluated.sort_values(by='ticker', ascending=True, inplace=True)
 df_evaluated.reset_index(drop=True, inplace=True)
 
