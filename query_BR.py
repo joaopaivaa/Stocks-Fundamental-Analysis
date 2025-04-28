@@ -72,7 +72,7 @@ for key in evaluation.keys():
     except Exception as e:
         pass
 
-stocks_df.to_csv('stocks_brazil_evaluated.csv', index=False, decimal='.', sep=';')
+# stocks_df.to_csv('stocks_brazil_evaluated.csv', index=False, decimal='.', sep=';')
 
 grades_df['Grade'] = grades_df.iloc[:, 4:].sum(axis=1)
 grades_df = grades_df.sort_values(by='Grade', ascending=False).reset_index(drop=True)

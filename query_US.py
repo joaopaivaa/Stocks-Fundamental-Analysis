@@ -1,7 +1,7 @@
 import pandas as pd
 import re
 from sklearn.preprocessing import MinMaxScaler
-from info_collect import stocks_df_usa
+from info_collect_us import stocks_df_usa
 
 evaluation = {
         "EV/revenue": {"positive": "< 3", "negative": "> 5"},
@@ -72,7 +72,7 @@ for key in evaluation.keys():
     except Exception as e:
         pass
 
-stocks_df.to_csv('stocks_us_evaluated.csv', index=False, decimal='.', sep=';')
+# stocks_df.to_csv('stocks_us_evaluated.csv', index=False, decimal='.', sep=';')
 
 grades_df['Grade'] = grades_df.iloc[:, 4:].sum(axis=1)
 grades_df = grades_df.sort_values(by='Grade', ascending=False).reset_index(drop=True)
