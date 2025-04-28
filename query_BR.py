@@ -1,7 +1,7 @@
 import pandas as pd
 import re
 from sklearn.preprocessing import MinMaxScaler
-from info_collect import stocks_df_brazil
+from info_collect_brazil import stocks_df_brazil
 
 evaluation = {
         "EV/revenue": {"positive": "< 3", "negative": "> 5"},
