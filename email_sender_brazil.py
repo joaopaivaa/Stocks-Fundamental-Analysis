@@ -14,8 +14,8 @@ email = "joaopaiva.raspberrypi@gmail.com"
 password = os.getenv("RASPBERRY_PASSWORD")
 
 destinatario = "joaovmarcotti@hotmail.com"
-assunto = "Stocks List"
-mensagem = f"Brazil Stocks List\n{df_evaluated_brazil[['ticker', 'name', 'Portfolio %', 'Portfolio Value']].to_str(index=False)}"
+assunto = "Brazil Stocks List"
+mensagem = f"Brazil Stocks List\n{df_evaluated_brazil[['ticker', 'name', 'Portfolio %', 'Portfolio Value']].to_string(index=False)}"
 
 msg = MIMEMultipart()
 msg['From'] = email

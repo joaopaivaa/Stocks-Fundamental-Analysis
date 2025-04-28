@@ -1,4 +1,3 @@
-import pandas as pd
 import re
 from sklearn.preprocessing import MinMaxScaler
 from info_collect_us import stocks_df_usa
