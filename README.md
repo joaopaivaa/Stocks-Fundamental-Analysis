@@ -21,7 +21,7 @@ This project is designed to scrape stock information from the **Ibovespa** and *
   - Identifies the top 10 stocks for each index.
 
 - **Email Notifications**:
-  - Automatically sends an email with the top 10 ranked stocks from each index to the user's email address.
+  - Automatically sends an email with the top 10 ranked stocks from each index as a PDF file to the user's email address.
 
 ---
 
