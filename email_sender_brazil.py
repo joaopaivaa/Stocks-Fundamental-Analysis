@@ -11,29 +11,41 @@ if today.day == 10:
     import smtplib
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
+    from email.mime.base import MIMEBase
+    from email import encoders
     import os
-    from analysis_brazil import df_evaluated as df_evaluated_brazil
+
+    import pdf_creator_brazil
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
     email = "joaopaiva.raspberrypi@gmail.com"
     password = os.getenv("RASPBERRY_PASSWORD")
 
-    destinatario = "joaovmarcotti@hotmail.com"
+    recipient = "joaovmarcotti@hotmail.com"
     assunto = "Brazil Stocks List"
-    mensagem = f"Brazil Stocks List\n{df_evaluated_brazil[['ticker', 'name', 'Portfolio %', 'Portfolio Value']].to_string(index=False)}"
 
     msg = MIMEMultipart()
     msg['From'] = email
-    msg['To'] = destinatario
+    msg['To'] = recipient
     msg['Subject'] = assunto
-    msg.attach(MIMEText(mensagem, 'plain'))
+
+    with open('top10_brazil_stocks.pdf', "rb") as attachment:
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(attachment.read())
+
+    encoders.encode_base64(part)
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename={'top10_brazil_stocks.pdf'}",
+    )
+    msg.attach(part)
 
     try:
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()
         server.login(email, password)
-        server.sendmail(email, destinatario, msg.as_string())
+        server.sendmail(email, recipient, msg.as_string())
         print("E-mail sent!")
     except Exception as e:
         print(f"Error: {e}")
