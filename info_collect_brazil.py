@@ -35,8 +35,8 @@ for ticker in tickers_ibov:
             new_line = dict()
 
             # Info
-            new_line['ticker'] = [ticker]
-            new_line['name'] = [company_name]
+            new_line['ticker'] = ticker
+            new_line['name'] = company_name
             new_line['country'] = stock.info['country'] if 'country' in stock.info else None
             new_line['industry'] = stock.info['industry'] if 'industry' in stock.info else None
             new_line['sector'] = stock.info['sector'] if 'sector' in stock.info else None
