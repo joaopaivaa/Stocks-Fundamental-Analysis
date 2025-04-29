@@ -2,7 +2,7 @@ from datetime import datetime
 
 today = datetime.now()
 
-if True:
+if today.day == 9:
     
     import time
 
