@@ -1,6 +1,7 @@
 import pandas as pd
 import yfinance as yf
 import numpy as np
+from time import sleep
 
 table_ibov = pd.read_html('https://en.wikipedia.org/wiki/List_of_companies_listed_on_B3')
 df_ibov = table_ibov[0]
@@ -24,6 +25,8 @@ for ticker in tickers_ibov:
     if len(ticker) <= 6:
     
         stock = yf.Ticker(ticker + '.SA')
+
+        sleep(2)
 
         income_statement = stock.income_stmt
         balance_sheet = stock.balance_sheet
@@ -270,4 +273,5 @@ for ticker in tickers_ibov:
             stocks_df_brazil.append(new_line)
 
 stocks_df_brazil = pd.DataFrame(stocks_df_brazil)
-# stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False, decimal='.', sep=';')
+
+stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False, decimal='.', sep=';')
