@@ -1,0 +1,380 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Stocks Fundamental Analysis Report\"\n",
+        "author: \"João Vitor de Paiva Marcotti\"\n",
+        "format: pdf\n",
+        "---"
+      ],
+      "id": "c99c7076"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "import yfinance as yf\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import matplotlib.dates as mdates\n",
+        "import seaborn as sns\n",
+        "\n",
+        "from analysis_brazil import df_evaluated as df_evaluated_brazil"
+      ],
+      "id": "b50faa8e",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "df_evaluated_brazil = df_evaluated_brazil[:5]\n",
+        "stocks_br = df_evaluated_brazil['ticker'].values\n",
+        "\n",
+        "stock = yf.Ticker(stocks_br[0] + '.SA')\n",
+        "\n",
+        "income_statement = stock.income_stmt\n",
+        "income_statement = income_statement.drop(income_statement.columns[4], axis=1)\n",
+        "income_statement = income_statement.T\n",
+        "\n",
+        "balance_sheet = stock.balance_sheet\n",
+        "balance_sheet = balance_sheet.drop(balance_sheet.columns[4], axis=1)\n",
+        "balance_sheet = balance_sheet.T"
+      ],
+      "id": "b96bd6bd",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "balance_sheet.index = pd.to_datetime(balance_sheet.index, format='%Y-%m-%d').year.astype(str)\n",
+        "balance_sheet.sort_index(ascending=True, inplace=True)\n",
+        "\n",
+        "income_statement.index = pd.to_datetime(income_statement.index, format='%Y-%m-%d').year.astype(str)\n",
+        "income_statement.sort_index(ascending=True, inplace=True)"
+      ],
+      "id": "28f613fb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "def positive_variable_printer(df, variable):\n",
+        "\n",
+        "    if df[variable].values[0] <= df[variable].values[3]:\n",
+        "        color = 'green'\n",
+        "    else:\n",
+        "        color = 'red'\n",
+        "\n",
+        "    plt.figure(figsize=(10, 5))\n",
+        "    plt.title(variable)\n",
+        "    plt.plot(df[variable], color=color, marker='o')\n",
+        "    plt.ylim(0, df[variable].max() * 1.1)\n",
+        "    plt.axhline(df[variable].mean(), color='blue', linestyle='--', label=f'Mean: {df[variable].mean()/1000000000:.3f} B')\n",
+        "    plt.legend()\n",
+        "    plt.show()\n",
+        "\n",
+        "def negative_variable_printer(df, variable):\n",
+        "\n",
+        "    if df[variable].values[0] >= df[variable].values[3]:\n",
+        "        color = 'green'\n",
+        "    else:\n",
+        "        color = 'red'\n",
+        "\n",
+        "    plt.figure(figsize=(10, 5))\n",
+        "    plt.title(variable)\n",
+        "    plt.plot(df[variable], color=color, marker='o')\n",
+        "    plt.ylim(0, df[variable].max() * 1.1)\n",
+        "    plt.axhline(df[variable].mean(), color='blue', linestyle='--', label=f'Mean: {df[variable].mean()/1000000000:.3f} B')\n",
+        "    plt.legend()\n",
+        "    plt.show()"
+      ],
+      "id": "858a2e23",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Brazilian Stocks\n"
+      ],
+      "id": "411eb62d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "titulo_secao = f\"{df_evaluated_brazil['name'].values[0]} - {df_evaluated_brazil['ticker'].values[0]}\""
+      ],
+      "id": "2b7083d0",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### `{{titulo_secao}}`\n"
+      ],
+      "id": "3aa4bcbc"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "titulo_secao = f\"{df_evaluated_brazil['name'].values[1]} - {df_evaluated_brazil['ticker'].values[1]}\""
+      ],
+      "id": "e2c1524d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### `{{titulo_secao}}`\n"
+      ],
+      "id": "4b261f1e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "titulo_secao = f\"{df_evaluated_brazil['name'].values[2]} - {df_evaluated_brazil['ticker'].values[2]}\""
+      ],
+      "id": "bbcff99d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### `{{titulo_secao}}`\n"
+      ],
+      "id": "2acb444b"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "titulo_secao = f\"{df_evaluated_brazil['name'].values[3]} - {df_evaluated_brazil['ticker'].values[3]}\""
+      ],
+      "id": "11e9940a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### `{{titulo_secao}}`\n"
+      ],
+      "id": "f67a35a9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "titulo_secao = f\"{df_evaluated_brazil['name'].values[4]} - {df_evaluated_brazil['ticker'].values[4]}\""
+      ],
+      "id": "cbd0d20d",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "### `{{titulo_secao}}`\n"
+      ],
+      "id": "cc6f4dc8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "93f6e7e6",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "graphic_printer(income_statement, 'EBIT')"
+      ],
+      "id": "8559867b",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "\n",
+        "df = df_evaluated_brazil.copy()\n",
+        "df = df[['ticker', 'name', 'Portfolio %', 'Portfolio Value']]\n",
+        "\n",
+        "df.columns = ['Ticker', 'Name', 'Portfolio %', 'Portfolio Value']\n",
+        "\n",
+        "pdf_filename = \"top10_brazil_stocks.pdf\""
+      ],
+      "id": "e1e36899",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "426678f5",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "294e39c8",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "46e6c809",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "8efc8c79",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "ebe5f401",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "37e29782",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "15896896",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "d5438fca",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "99664a96",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "c86e5a61",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n"
+      ],
+      "id": "aa35668c",
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "venv",
+      "language": "python",
+      "display_name": "Python (venv)",
+      "path": "C:\\Users\\joaov\\AppData\\Roaming\\jupyter\\kernels\\venv"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

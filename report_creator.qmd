@@ -1,0 +1,230 @@
+---
+title: "Stocks Fundamental Analysis Report"
+author: "João Vitor de Paiva Marcotti"
+format: pdf
+---
+
+```{python}
+#| echo: false
+
+import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import seaborn as sns
+
+from analysis_brazil import df_evaluated as df_evaluated_brazil
+
+```
+
+```{python}
+#| echo: false
+
+df_evaluated_brazil = df_evaluated_brazil[:5]
+stocks_br = df_evaluated_brazil['ticker'].values
+
+stock = yf.Ticker(stocks_br[0] + '.SA')
+
+income_statement = stock.income_stmt
+income_statement = income_statement.drop(income_statement.columns[4], axis=1)
+income_statement = income_statement.T
+
+balance_sheet = stock.balance_sheet
+balance_sheet = balance_sheet.drop(balance_sheet.columns[4], axis=1)
+balance_sheet = balance_sheet.T
+
+```
+
+```{python}
+#| echo: false
+
+balance_sheet.index = pd.to_datetime(balance_sheet.index, format='%Y-%m-%d').year.astype(str)
+balance_sheet.sort_index(ascending=True, inplace=True)
+
+income_statement.index = pd.to_datetime(income_statement.index, format='%Y-%m-%d').year.astype(str)
+income_statement.sort_index(ascending=True, inplace=True)
+
+```
+
+```{python}
+#| echo: false
+
+def positive_variable_printer(df, variable):
+
+    if df[variable].values[0] <= df[variable].values[3]:
+        color = 'green'
+    else:
+        color = 'red'
+
+    plt.figure(figsize=(10, 5))
+    plt.title(variable)
+    plt.plot(df[variable], color=color, marker='o')
+    plt.ylim(0, df[variable].max() * 1.1)
+    plt.axhline(df[variable].mean(), color='blue', linestyle='--', label=f'Mean: {df[variable].mean()/1000000000:.3f} B')
+    plt.legend()
+    plt.show()
+
+def negative_variable_printer(df, variable):
+
+    if df[variable].values[0] >= df[variable].values[3]:
+        color = 'green'
+    else:
+        color = 'red'
+
+    plt.figure(figsize=(10, 5))
+    plt.title(variable)
+    plt.plot(df[variable], color=color, marker='o')
+    plt.ylim(0, df[variable].max() * 1.1)
+    plt.axhline(df[variable].mean(), color='blue', linestyle='--', label=f'Mean: {df[variable].mean()/1000000000:.3f} B')
+    plt.legend()
+    plt.show()
+
+```
+
+## Brazilian Stocks
+
+```{python}
+#| echo: false
+
+titulo_secao = f"{df_evaluated_brazil['name'].values[0]} - {df_evaluated_brazil['ticker'].values[0]}"
+
+```
+### `{{titulo_secao}}`
+
+```{python}
+#| echo: false
+
+titulo_secao = f"{df_evaluated_brazil['name'].values[1]} - {df_evaluated_brazil['ticker'].values[1]}"
+
+```
+### `{{titulo_secao}}`
+
+```{python}
+#| echo: false
+
+titulo_secao = f"{df_evaluated_brazil['name'].values[2]} - {df_evaluated_brazil['ticker'].values[2]}"
+
+```
+### `{{titulo_secao}}`
+
+```{python}
+#| echo: false
+
+titulo_secao = f"{df_evaluated_brazil['name'].values[3]} - {df_evaluated_brazil['ticker'].values[3]}"
+
+```
+### `{{titulo_secao}}`
+
+```{python}
+#| echo: false
+
+titulo_secao = f"{df_evaluated_brazil['name'].values[4]} - {df_evaluated_brazil['ticker'].values[4]}"
+
+```
+### `{{titulo_secao}}`
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+graphic_printer(income_statement, 'EBIT')
+
+```
+
+
+
+```{python}
+
+#| echo: false
+
+df = df_evaluated_brazil.copy()
+df = df[['ticker', 'name', 'Portfolio %', 'Portfolio Value']]
+
+df.columns = ['Ticker', 'Name', 'Portfolio %', 'Portfolio Value']
+
+pdf_filename = "top10_brazil_stocks.pdf"
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
+
+```{python}
+#| echo: false
+
+
+
+```
