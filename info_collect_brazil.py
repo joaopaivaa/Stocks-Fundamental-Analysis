@@ -274,4 +274,4 @@ for ticker in tickers_ibov:
 
 stocks_df_brazil = pd.DataFrame(stocks_df_brazil)
 
-stocks_df_brazil.to_csv('stocks_df_brazil.csv', index=False, decimal='.', sep=';')
+stocks_df_brazil.to_csv('bronze/stocks_df_brazil.csv', index=False, decimal='.', sep=';')

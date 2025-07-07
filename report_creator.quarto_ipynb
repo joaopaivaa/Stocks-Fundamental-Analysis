@@ -10,7 +10,7 @@
         "format: pdf\n",
         "---"
       ],
-      "id": "c99c7076"
+      "id": "337a5b65"
     },
     {
       "cell_type": "code",
@@ -26,7 +26,7 @@
         "\n",
         "from analysis_brazil import df_evaluated as df_evaluated_brazil"
       ],
-      "id": "b50faa8e",
+      "id": "e41eb682",
       "execution_count": null,
       "outputs": []
     },
@@ -49,7 +49,7 @@
         "balance_sheet = balance_sheet.drop(balance_sheet.columns[4], axis=1)\n",
         "balance_sheet = balance_sheet.T"
       ],
-      "id": "b96bd6bd",
+      "id": "dbeb6598",
       "execution_count": null,
       "outputs": []
     },
@@ -65,7 +65,7 @@
         "income_statement.index = pd.to_datetime(income_statement.index, format='%Y-%m-%d').year.astype(str)\n",
         "income_statement.sort_index(ascending=True, inplace=True)"
       ],
-      "id": "28f613fb",
+      "id": "43cd572c",
       "execution_count": null,
       "outputs": []
     },
@@ -105,7 +105,7 @@
         "    plt.legend()\n",
         "    plt.show()"
       ],
-      "id": "858a2e23",
+      "id": "21fdd615",
       "execution_count": null,
       "outputs": []
     },
@@ -115,7 +115,7 @@
       "source": [
         "## Brazilian Stocks\n"
       ],
-      "id": "411eb62d"
+      "id": "3348ad50"
     },
     {
       "cell_type": "code",
@@ -125,7 +125,7 @@
         "\n",
         "titulo_secao = f\"{df_evaluated_brazil['name'].values[0]} - {df_evaluated_brazil['ticker'].values[0]}\""
       ],
-      "id": "2b7083d0",
+      "id": "a53dd035",
       "execution_count": null,
       "outputs": []
     },
@@ -135,7 +135,7 @@
       "source": [
         "### `{{titulo_secao}}`\n"
       ],
-      "id": "3aa4bcbc"
+      "id": "a4a77603"
     },
     {
       "cell_type": "code",
@@ -145,7 +145,7 @@
         "\n",
         "titulo_secao = f\"{df_evaluated_brazil['name'].values[1]} - {df_evaluated_brazil['ticker'].values[1]}\""
       ],
-      "id": "e2c1524d",
+      "id": "bc8441ee",
       "execution_count": null,
       "outputs": []
     },
@@ -155,7 +155,7 @@
       "source": [
         "### `{{titulo_secao}}`\n"
       ],
-      "id": "4b261f1e"
+      "id": "a88a6993"
     },
     {
       "cell_type": "code",
@@ -165,7 +165,7 @@
         "\n",
         "titulo_secao = f\"{df_evaluated_brazil['name'].values[2]} - {df_evaluated_brazil['ticker'].values[2]}\""
       ],
-      "id": "bbcff99d",
+      "id": "63025946",
       "execution_count": null,
       "outputs": []
     },
@@ -175,7 +175,7 @@
       "source": [
         "### `{{titulo_secao}}`\n"
       ],
-      "id": "2acb444b"
+      "id": "61753b25"
     },
     {
       "cell_type": "code",
@@ -185,7 +185,7 @@
         "\n",
         "titulo_secao = f\"{df_evaluated_brazil['name'].values[3]} - {df_evaluated_brazil['ticker'].values[3]}\""
       ],
-      "id": "11e9940a",
+      "id": "df75b12d",
       "execution_count": null,
       "outputs": []
     },
@@ -195,7 +195,7 @@
       "source": [
         "### `{{titulo_secao}}`\n"
       ],
-      "id": "f67a35a9"
+      "id": "6f851028"
     },
     {
       "cell_type": "code",
@@ -205,7 +205,7 @@
         "\n",
         "titulo_secao = f\"{df_evaluated_brazil['name'].values[4]} - {df_evaluated_brazil['ticker'].values[4]}\""
       ],
-      "id": "cbd0d20d",
+      "id": "fc30ab71",
       "execution_count": null,
       "outputs": []
     },
@@ -215,7 +215,7 @@
       "source": [
         "### `{{titulo_secao}}`\n"
       ],
-      "id": "cc6f4dc8"
+      "id": "2c377e63"
     },
     {
       "cell_type": "code",
@@ -223,7 +223,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "93f6e7e6",
+      "id": "ec5da038",
       "execution_count": null,
       "outputs": []
     },
@@ -235,7 +235,7 @@
         "\n",
         "graphic_printer(income_statement, 'EBIT')"
       ],
-      "id": "8559867b",
+      "id": "46140493",
       "execution_count": null,
       "outputs": []
     },
@@ -252,7 +252,7 @@
         "\n",
         "pdf_filename = \"top10_brazil_stocks.pdf\""
       ],
-      "id": "e1e36899",
+      "id": "661d2abe",
       "execution_count": null,
       "outputs": []
     },
@@ -262,7 +262,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "426678f5",
+      "id": "3cb21f8f",
       "execution_count": null,
       "outputs": []
     },
@@ -272,7 +272,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "294e39c8",
+      "id": "7bc6edbf",
       "execution_count": null,
       "outputs": []
     },
@@ -282,7 +282,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "46e6c809",
+      "id": "fdba1c01",
       "execution_count": null,
       "outputs": []
     },
@@ -292,7 +292,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "8efc8c79",
+      "id": "a7da8175",
       "execution_count": null,
       "outputs": []
     },
@@ -302,7 +302,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "ebe5f401",
+      "id": "3fbc4bfe",
       "execution_count": null,
       "outputs": []
     },
@@ -312,7 +312,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "37e29782",
+      "id": "6207505c",
       "execution_count": null,
       "outputs": []
     },
@@ -322,7 +322,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "15896896",
+      "id": "03fc2a04",
       "execution_count": null,
       "outputs": []
     },
@@ -332,7 +332,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "d5438fca",
+      "id": "792828c6",
       "execution_count": null,
       "outputs": []
     },
@@ -342,7 +342,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "99664a96",
+      "id": "ed952cc6",
       "execution_count": null,
       "outputs": []
     },
@@ -352,7 +352,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "c86e5a61",
+      "id": "192646cd",
       "execution_count": null,
       "outputs": []
     },
@@ -362,7 +362,7 @@
       "source": [
         "#| echo: false\n"
       ],
-      "id": "aa35668c",
+      "id": "00acf45e",
       "execution_count": null,
       "outputs": []
     }

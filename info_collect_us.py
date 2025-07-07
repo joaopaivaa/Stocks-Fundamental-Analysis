@@ -270,4 +270,4 @@ for ticker in tickers_SP:
 
 stocks_df_usa = pd.DataFrame(stocks_df_usa)
 
-stocks_df_usa.to_csv('stocks_df_usa.csv', index=False, decimal='.', sep=';')
+stocks_df_usa.to_csv('bronze/stocks_df_usa.csv', index=False, decimal='.', sep=';')

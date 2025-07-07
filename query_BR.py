@@ -1,6 +1,6 @@
 import re
 from sklearn.preprocessing import MinMaxScaler
-from info_collect_brazil import stocks_df_brazil
+import pandas as pd
 
 evaluation = {
         "EV/revenue": {"positive": "< 3", "negative": "> 5"},
@@ -22,8 +22,7 @@ evaluation = {
 
 priority = ['EV/ebitda','net_margin','ebitda_margin','roe','net_debt_ebitda','general_liquidity']
 
-#stocks_df = pd.read_csv("stocks_df_brazil.csv", sep=';')
-stocks_df = stocks_df_brazil.copy()
+stocks_df = pd.read_csv("bronze/stocks_df_brazil.csv")
 
 stocks_df = stocks_df.loc[stocks_df['negative_ebitda'] != 1]
 stocks_df = stocks_df.loc[stocks_df['negative_ebit'] != 1]
@@ -71,9 +70,9 @@ for key in evaluation.keys():
     except Exception as e:
         pass
 
-stocks_df.to_csv('stocks_df_brazil.csv', index=False, decimal='.', sep=';')
+stocks_df.to_csv('silver/stocks_df_brazil.csv', index=False, decimal='.', sep=';')
 
 grades_df['Grade'] = grades_df.iloc[:, 4:].sum(axis=1)
 grades_df = grades_df.sort_values(by='Grade', ascending=False).reset_index(drop=True)
 
-grades_df.to_csv('grades_df_brazil.csv', index=False, decimal='.', sep=';')
+grades_df.to_csv('silver/grades_df_brazil.csv', index=False, decimal='.', sep=';')
