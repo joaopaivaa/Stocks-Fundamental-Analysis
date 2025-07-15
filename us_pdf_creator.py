@@ -1,14 +1,14 @@
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
-from analysis_brazil import df_evaluated as df_evaluated_brazil
+from us_analysis import df_evaluated as df_evaluated_us
 from datetime import datetime
 
-df = df_evaluated_brazil.copy()
+df = df_evaluated_us.copy()
 df = df[['ticker', 'name', 'Portfolio %', 'Portfolio Value']]
 
 df.columns = ['Ticker', 'Name', 'Portfolio %', 'Portfolio Value']
 
-pdf_filename = "top10_brazil_stocks.pdf"
+pdf_filename = "top10_us_stocks.pdf"
 
 with PdfPages(pdf_filename) as pdf:
 
@@ -18,7 +18,7 @@ with PdfPages(pdf_filename) as pdf:
     ax.axis('off')  # Remover eixos
 
     # Adicionar o título
-    plt.text(0.5, 0.9, f"Top 10 Best Brazilian Stocks - {datetime.now().strftime('%Y-%m-%d')}", fontsize=16, ha='center', va='center', transform=fig.transFigure)
+    plt.text(0.5, 0.9, f"Top 10 Best US Stocks - {datetime.now().strftime('%Y-%m-%d')}", fontsize=16, ha='center', va='center', transform=fig.transFigure)
 
     # Renderizar o DataFrame como uma tabela no Matplotlib
     table = ax.table(

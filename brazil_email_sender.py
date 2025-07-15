@@ -15,7 +15,7 @@ if today.day == 23:
     from email import encoders
     import os
 
-    import pdf_creator_brazil
+    import brazil_pdf_creator
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
