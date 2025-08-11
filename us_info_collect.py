@@ -1,10 +1,7 @@
 import pandas as pd
 import yfinance as yf
 import numpy as np
-
-table_SP = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
-df_SP = table_SP[0]
-tickers_SP = df_SP.Symbol.to_list()
+from time import sleep
 
 def perc_var(array):
     perc_var = []
@@ -15,11 +12,24 @@ def perc_var(array):
     std = round(np.std(perc_var), 4)
     return perc_var, mean, std
 
+size = 'Nano'
+tickers_us = pd.read_csv(f"stocks list/us_stocks_list_{size}.csv", sep=';')['ticker'].values
+
 stocks_df_usa = list()
 
-for ticker in tickers_SP:
+count = 0
+total = len(tickers_us)
+
+for ticker in tickers_us:
+
+    #print(f'Collecting data for {ticker}...')
+    count += 1
+    print(f'{count}/{total}')
 
     stock = yf.Ticker(ticker)
+
+    if stock is None:
+        continue
 
     income_statement = stock.income_stmt
     balance_sheet = stock.balance_sheet
@@ -42,9 +52,6 @@ for ticker in tickers_SP:
         new_line['dividend_yield'] = stock.info['dividendYield'] if 'dividendYield' in stock.info else None
 
         # Valuation
-        #new_line['beta'] = stock.info['beta'] if 'beta' in stock.info else None
-        #new_line['marketcap'] = stock.info['marketCap'] if 'marketCap' in stock.info else None
-        #new_line['enterprise_value'] = stock.info['enterpriseValue'] if 'enterpriseValue' in stock.info else None
         new_line['EV/revenue'] = stock.info['enterpriseToRevenue'] if 'enterpriseToRevenue' in stock.info else None
         new_line['EV/ebitda'] = stock.info['enterpriseToEbitda'] if 'enterpriseToEbitda' in stock.info else None
 
@@ -269,5 +276,4 @@ for ticker in tickers_SP:
         stocks_df_usa.append(new_line)
 
 stocks_df_usa = pd.DataFrame(stocks_df_usa)
-
-stocks_df_usa.to_csv('bronze/stocks_df_usa.csv', index=False, decimal='.', sep=';')
+stocks_df_usa.to_csv(f'bronze/stocks_df_usa_{size}.csv', index=False, decimal='.', sep=';')
