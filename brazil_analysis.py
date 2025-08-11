@@ -24,6 +24,10 @@ df_evaluated['Portfolio Value'] = round(df_evaluated['Portfolio %'] * portfolio_
 
 df_evaluated.to_csv('gold/df_evaluated_brazil.csv', index=False, decimal='.', sep=';')
 
-past_portfolios = pd.read_csv('gold/past_portfolios_brazil.csv', decimal='.', sep=';')
+try:
+    past_portfolios = pd.read_csv('gold/past_portfolios_brazil.csv', decimal='.', sep=';')
+except:
+    past_portfolios = pd.DataFrame()
+
 past_portfolios[f"{datetime.now().strftime('%Y-%m-%d')}"] = df_evaluated['ticker']
 past_portfolios.to_csv('gold/past_portfolios_brazil.csv', index=False, decimal='.', sep=';')
