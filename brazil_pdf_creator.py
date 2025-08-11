@@ -1,9 +1,9 @@
 from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
-from brazil_analysis import df_evaluated as df_evaluated_brazil
+import pandas as pd
 from datetime import datetime
 
-df = df_evaluated_brazil.copy()
+df = pd.read_csv('gold/df_evaluated_brazil.csv', decimal='.', sep=';')
 df = df[['ticker', 'name', 'Portfolio %', 'Portfolio Value']]
 
 df.columns = ['Ticker', 'Name', 'Portfolio %', 'Portfolio Value']

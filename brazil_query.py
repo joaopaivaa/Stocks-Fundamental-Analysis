@@ -22,7 +22,7 @@ evaluation = {
 
 priority = ['EV/ebitda','net_margin','ebitda_margin','roe','net_debt_ebitda','general_liquidity']
 
-stocks_df = pd.read_csv("bronze/stocks_df_brazil.csv")
+stocks_df = pd.read_csv("bronze/stocks_df_brazil.csv", decimal='.', sep=';')
 
 stocks_df = stocks_df.loc[stocks_df['negative_ebitda'] != 1]
 stocks_df = stocks_df.loc[stocks_df['negative_ebit'] != 1]

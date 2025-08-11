@@ -18,13 +18,14 @@ stocks_df_brazil = list()
 
 for ticker in tickers_ibov:
 
-    print(f'Processing ticker: {ticker}')
-
     if len(ticker) <= 6:
+
+        print(f'Collecting data for {ticker}...')
         
         stock = yf.Ticker(ticker + '.SA')
 
-        print(f'Ticker processed: {ticker}')
+        if stock is None:
+            continue
 
         income_statement = stock.income_stmt
         balance_sheet = stock.balance_sheet
@@ -267,6 +268,7 @@ for ticker in tickers_ibov:
 
             stocks_df_brazil.append(new_line)
 
-    sleep(1)
+    sleep(0.5)
 
+stocks_df_brazil = pd.DataFrame(stocks_df_brazil)
 stocks_df_brazil.to_csv('bronze/stocks_df_brazil.csv', index=False, decimal='.', sep=';')
